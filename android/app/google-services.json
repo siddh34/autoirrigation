@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "296014989568",
+    "firebase_url": "https://smart-i-7c4f3-default-rtdb.firebaseio.com",
+    "project_id": "smart-i-7c4f3",
+    "storage_bucket": "smart-i-7c4f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296014989568:android:c2df91098428d049340be5",
+        "android_client_info": {
+          "package_name": "com.example.myirrigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296014989568-ae0vqntv3ors277d04qohircjl4apune.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ2c21DZGSoA375pbpGy-raQcNjdnEkBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296014989568-ae0vqntv3ors277d04qohircjl4apune.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
