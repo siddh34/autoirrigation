@@ -12,7 +12,7 @@ class _UserScreenState extends State<UserScreen> {
   DataManager myDataManager = new DataManager();
 
   @override
-  void initState() async {
+  void initState(){
     super.initState();
   }
 
