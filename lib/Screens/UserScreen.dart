@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myirrigation/Utilities/DataManager.dart';
-
+import 'package:myirrigation/Utilities/Graphdata.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -8,11 +8,17 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  // functions
+  // functions and variables
   DataManager myDataManager = new DataManager();
+  List<GraphData> data = [];
 
   @override
-  void initState(){
+  void initState() {
+    // getting the data
+    Future.delayed(Duration(seconds: 10), () async {
+      data = await myDataManager.getData();
+    });
+
     super.initState();
   }
 

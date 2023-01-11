@@ -1,29 +1,37 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
-import 'dart:convert';
+// import 'dart:convert';
 
 class DataManager {
   // function or variables
   List<GraphData> useableGraphData = [];
 
-  Future<void> getData() async {
+  Future<List<GraphData>> getData() async {
     try {
       await Firebase.initializeApp();
 
-      DatabaseReference reference = FirebaseDatabase.instance.ref();
+      DatabaseReference reference =
+          FirebaseDatabase.instance.ref().child("smart-I-test ");
 
       var snapshot = await reference.get();
 
+      List<Map> dataList = [];
+
+      // checking whether data collection exists on firebase
       if (snapshot.exists) {
-        var data = json.encode(snapshot.value.toString());
+        //Return list of children as Map<String,dynamic>
+        dataList = snapshot.children.map((e) => e.value as Map).toList();
 
-        print(data);
-        
-        // getting data via json
-        // for(var myData in  data as List){
+        // for debugging
+        // print(dataList[0]['humidity']);
 
-        // }
+        for (var i in dataList) {
+          useableGraphData.add(GraphData.fromJson(i));
+        }
+
+        // for debugging
+        // print(useableGraphData[0].humidity);
 
       } else {
         print("Data not found");
@@ -31,5 +39,7 @@ class DataManager {
     } catch (e) {
       print(e);
     }
+
+    return useableGraphData;
   }
 }
