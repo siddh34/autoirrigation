@@ -11,42 +11,52 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   // functions and variables
   DataManager myDataManager = new DataManager();
-  List<GraphData> data = [];
+  // // List<GraphData> data = [];
 
-  @override
-  void initState() {
-    // getting the data
+  // @override
+  // void initState() {
+  //   // getting the data
 
-    getData();
+  //   // getData();
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
-  void getData() async {
-    data = await myDataManager.getData();
-  }
+  // void getData() async {
+  //   data = await myDataManager.getData();
+  //   print(data.length);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SfCartesianChart(
-              primaryXAxis: DateTimeAxis(),
-              series: <ChartSeries>[
-                LineSeries<GraphData, DateTime>(
-                    dataSource: data,
-                    xValueMapper: (GraphData GD, _) => GD.datetime,
-                    yValueMapper: (GraphData GD, _) => GD.temp)
-              ],
-            ),
-          ],
-        ),
-      ),
+      body: FutureBuilder<List<GraphData>>(
+          future: myDataManager.getData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var data = snapshot.data!;
+              return SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SfCartesianChart(
+                      primaryXAxis: DateTimeAxis(),
+                      series: <ChartSeries>[
+                        LineSeries<GraphData, DateTime>(
+                            dataSource: data,
+                            xValueMapper: (GraphData GD, _) => GD.datetime,
+                            yValueMapper: (GraphData GD, _) => GD.temp)
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 }
