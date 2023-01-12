@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myirrigation/Utilities/DataManager.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -15,11 +16,14 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     // getting the data
-    Future.delayed(Duration(seconds: 10), () async {
-      data = await myDataManager.getData();
-    });
+
+    getData();
 
     super.initState();
+  }
+
+  void getData() async {
+    data = await myDataManager.getData();
   }
 
   @override
@@ -31,14 +35,15 @@ class _UserScreenState extends State<UserScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(140),
-              child: TextButton(
-                  onPressed: (() {
-                    myDataManager.getData();
-                  }),
-                  child: Text('Press')),
-            )
+            SfCartesianChart(
+              primaryXAxis: DateTimeAxis(),
+              series: <ChartSeries>[
+                LineSeries<GraphData, DateTime>(
+                    dataSource: data,
+                    xValueMapper: (GraphData GD, _) => GD.datetime,
+                    yValueMapper: (GraphData GD, _) => GD.temp)
+              ],
+            ),
           ],
         ),
       ),

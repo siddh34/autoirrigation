@@ -1,6 +1,6 @@
 class GraphData {
   GraphData(
-      {required this.date,
+      {required this.datetime,
       required this.humidity,
       required this.motorState,
       required this.pirValue,
@@ -8,10 +8,9 @@ class GraphData {
       required this.rainValue,
       required this.soilMoisturePercentage,
       required this.soilMoistureValue,
-      required this.temp,
-      required this.time});
+      required this.temp});
 
-  var date;
+  DateTime datetime;
   double humidity;
   int motorState;
   int pirValue;
@@ -20,12 +19,11 @@ class GraphData {
   double soilMoisturePercentage;
   int soilMoistureValue;
   double temp;
-  var time;
 
   // adding directly through this method
   factory GraphData.fromJson(Map json) {
     return GraphData(
-        date: json["date"].toString(),
+        datetime: getDatetimeFromString(json['date'], json['time']),
         humidity: double.parse(json["humidity"]),
         motorState: int.parse(json["motor_state"]),
         pirValue: int.parse(json["pir_value"]),
@@ -33,7 +31,20 @@ class GraphData {
         rainValue: int.parse(json["rain_value"]),
         soilMoisturePercentage: double.parse(json["soil_moisture_percentage"]),
         soilMoistureValue: int.parse(json["soil_moisture_value"]),
-        temp: double.parse(json["temp"]),
-        time: json["time"].toString());
+        temp: double.parse(json["temp"]));
+  }
+
+  static DateTime getDatetimeFromString(String date, String time) {
+    var list1 = date.split("/");
+    var list2 = time.split(":");
+
+    return DateTime(
+      int.parse(list1.last),
+        int.parse(list1[1]),
+        int.parse(list1[0]),
+        int.parse(list2[0]),
+        int.parse(list2[1]),
+        int.parse(list2[2])
+    );
   }
 }
