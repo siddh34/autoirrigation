@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
-// import 'dart:convert';
 
 class DataManager {
   // function or variables
@@ -22,18 +21,11 @@ class DataManager {
       if (snapshot.exists) {
         //Return list of children as Map<String,dynamic>
         dataList = snapshot.children.map((e) => e.value as Map).toList();
-
-        // for debugging
-        // print(dataList[0]['humidity']);
-
         for (var i in dataList) {
           useableGraphData.add(GraphData.fromJson(i));
         }
-
-        // for debugging
-        // print(useableGraphData[0].humidity);
-
-      } else {
+      } 
+      else {
         print("Data not found");
       }
     } catch (e) {
