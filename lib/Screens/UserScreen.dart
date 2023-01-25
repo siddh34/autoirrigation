@@ -40,18 +40,27 @@ class _UserScreenState extends State<UserScreen> {
             Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                  '\t\tSummary: \n\t  \tTemperature drops by 1 degree in between 3.50pm and 4.40pm'),
-              width: 330,
+                '\t\tSummary: \n\t  \tTemperature drops by 1 degree in between 3.50pm and 4.40pm',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    fontFamily: 'Genos'),
+              ),
+              width: 320,
               height: 200,
               decoration: BoxDecoration(
-                color: Color.fromARGB(135, 255, 255, 255),
-                border: Border.all(color: Colors.black, width: 1),
+                color: Colors.white54,
                 borderRadius: BorderRadius.all(Radius.circular(7)),
+                gradient: LinearGradient(
+                    colors: [Colors.white, Color.fromARGB(255, 242, 242, 242)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight),
                 boxShadow: [
                   BoxShadow(
                     color: Color.fromARGB(255, 182, 171, 171).withOpacity(0.2),
                     spreadRadius: 5,
-                    blurRadius: 3,
+                    offset: Offset(5, 10),
+                    blurRadius: 5,
                   )
                 ],
               ),
@@ -60,14 +69,19 @@ class _UserScreenState extends State<UserScreen> {
               height: 30,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 50),
-                  child: Text("Filter: "),
+                  padding: EdgeInsets.only(left: 30),
+                  child: Text(
+                    "Filter: ",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 100),
                   child: DropdownButton(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     value: filterConditions[0],
                     items: filterConditions.map((String items) {
                       return DropdownMenuItem(
@@ -102,9 +116,7 @@ class _UserScreenState extends State<UserScreen> {
                     return Center(child: CircularProgressIndicator());
                   }
                 }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: ClipRRect(
@@ -123,10 +135,33 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            // TODO: press to open UI
+                            showModalBottomSheet(
+                                context: context,
+                                elevation: 50,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                builder: (context) {
+                                  return Container(
+                                    height: 150,
+                                    child: Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text('On'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text('Off'),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
                           },
                           child: Text(
-                            "Devic Controls",
+                            "Device Controls",
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -136,7 +171,7 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left:8.0),
+                padding: const EdgeInsets.only(right: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   child: Stack(
@@ -153,12 +188,25 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            // TODO: press to open UI
+                            showModalBottomSheet(
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                builder: (context) {
+                                  return Container(
+                                    height: 350,
+                                    child: Row(
+                                      children: [],
+                                    ),
+                                  );
+                                });
                           },
                           child: Text(
                             "Find Devices",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           )),
                     ],
