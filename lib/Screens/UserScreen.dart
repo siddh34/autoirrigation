@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:myirrigation/Utilities/DataManager.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
-
 import '../Utilities/LineChart.dart';
+import '../Screens/DeviceControlScreen.dart';
+import 'FindDeviceScreen.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -12,7 +14,8 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   // functions and variables
   DataManager myDataManager = new DataManager();
-
+  late DeviceControlScreen DCS;
+  late FindDeviceScreen FCS;
   var filterConditions = [
     'Hourly',
     'After 7 days',
@@ -135,30 +138,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                elevation: 50,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                builder: (context) {
-                                  return Container(
-                                    height: 150,
-                                    child: Row(
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text('On'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text('Off'),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
+                            DCS.DeviceControlSheet(context);
                           },
                           child: Text(
                             "Device Controls",
@@ -188,20 +168,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                builder: (context) {
-                                  return Container(
-                                    height: 350,
-                                    child: Row(
-                                      children: [],
-                                    ),
-                                  );
-                                });
+                            FCS.ConnectDeviceSheet(context);
                           },
                           child: Text(
                             "Find Devices",
