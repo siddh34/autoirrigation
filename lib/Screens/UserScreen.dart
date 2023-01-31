@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:myirrigation/Utilities/DataManager.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
-import '../Utilities/LineChart.dart';
+import '../Utilities/TimeTempLineChart.dart';
 import '../Screens/DeviceControlScreen.dart';
+import '../Widgets/GraphWidgets.dart';
 import 'FindDeviceScreen.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -14,14 +16,16 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   // functions and variables
   DataManager myDataManager = new DataManager();
-  late DeviceControlScreen DCS;
-  late FindDeviceScreen FCS;
+  late DeviceControlScreen DCS = new DeviceControlScreen();
+  late FindDeviceScreen FCS = new FindDeviceScreen();
   var filterConditions = [
     'Hourly',
     'After 7 days',
     'After a month',
     'After 14 days'
   ];
+
+  List<GraphWidget> myGraphs = [];
 
   @override
   Widget build(BuildContext context) {
@@ -100,25 +104,30 @@ class _UserScreenState extends State<UserScreen> {
             SizedBox(
               height: 10,
             ),
-            FutureBuilder<List<GraphData>>(
-                future: myDataManager.getData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var data = snapshot.data!;
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(6),
-                          child: CartesianLineChart(data: data),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
+            SwipeTo(
+              onRightSwipe: () {},
+              onLeftSwipe: () {},
+              child: FutureBuilder<List<GraphData>>(
+                  future: myDataManager.getData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var data = snapshot.data!;
+                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
+                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
+                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
+                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GraphWidget(chart: CartesianLineChart(data: data)),
+                        ],
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: EdgeInsets.only(left: 8),
@@ -138,7 +147,9 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            DCS.DeviceControlSheet(context);
+                            setState(() {
+                              DCS.DeviceControlSheet(context);
+                            });
                           },
                           child: Text(
                             "Device Controls",
@@ -168,7 +179,9 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            FCS.ConnectDeviceSheet(context);
+                            setState(() {
+                              FCS.ConnectDeviceSheet(context);
+                            });
                           },
                           child: Text(
                             "Find Devices",
