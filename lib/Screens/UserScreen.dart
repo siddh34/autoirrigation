@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:myirrigation/Utilities/DataManager.dart';
 import 'package:myirrigation/Utilities/Graphdata.dart';
+import '../Utilities/HumidityTempGraph.dart';
+import '../Utilities/HumidityTimeGraph.dart';
 import '../Utilities/TimeTempLineChart.dart';
 import '../Screens/DeviceControlScreen.dart';
 import '../Widgets/GraphWidgets.dart';
@@ -15,6 +17,7 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   // functions and variables
+  int graphNumber = 0;
   DataManager myDataManager = new DataManager();
   late DeviceControlScreen DCS = new DeviceControlScreen();
   late FindDeviceScreen FCS = new FindDeviceScreen();
@@ -105,22 +108,38 @@ class _UserScreenState extends State<UserScreen> {
               height: 10,
             ),
             SwipeTo(
-              onRightSwipe: () {},
-              onLeftSwipe: () {},
+              onRightSwipe: () {
+                setState(() {
+                  if (graphNumber < 2) {
+                    print(graphNumber);
+                    graphNumber++;
+                  }
+                });
+              },
+              onLeftSwipe: () {
+                setState(() {
+                  if (0 < graphNumber) {
+                    print(graphNumber);
+                    graphNumber--;
+                  }
+                });
+              },
               child: FutureBuilder<List<GraphData>>(
                   future: myDataManager.getData(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       var data = snapshot.data!;
-                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
-                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
-                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
-                      myGraphs.add(GraphWidget(chart: CartesianLineChart(data: data)));
+                      myGraphs.add(
+                          GraphWidget(chart: CartesianLineChart(data: data)));
+                      myGraphs.add(
+                          GraphWidget(chart: HumidityTempGraph(data: data)));
+                      myGraphs.add(
+                          GraphWidget(chart: HumidityTimeGraph(data: data)));
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          GraphWidget(chart: CartesianLineChart(data: data)),
+                          myGraphs[graphNumber],
                         ],
                       );
                     } else {

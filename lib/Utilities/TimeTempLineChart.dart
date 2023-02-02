@@ -18,6 +18,7 @@ class _CartesianLineChartState extends State<CartesianLineChart> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      title: ChartTitle(text: "Temp vs Time"),
       primaryXAxis: DateTimeAxis(),
       series: <ChartSeries>[
         LineSeries<GraphData, DateTime>(
